@@ -8,10 +8,11 @@ $ npm install pass-reset
 
 ## Configuration
 
+##### Example user lookup routine
+
 ```javascript
 var passReset = require('pass-reset');
 
-// Example user lookup routine
 passReset.lookupUser(function(login, callback) {
 	User.findOne({ username: login }, function(err, user) {
 		if (err) {return callback(err);}
@@ -23,8 +24,13 @@ passReset.lookupUser(function(login, callback) {
 		});
 	});
 });
+```
 
-// Example set password routine
+##### Example set password routine
+
+```javascript
+var passReset = require('pass-reset');
+
 passReset.setPassword(function(id, password, callback) {
 	if (password.length < 8) {
 		return callback(null, false, 'Password must be at least 8 characters');
@@ -36,8 +42,13 @@ passReset.setPassword(function(id, password, callback) {
 		callback(null, true);
 	});
 });
+```
 
-// Example send email routine
+##### Example send email routine
+
+```javascript
+var passReset = require('pass-reset');
+
 passReset.sendEmail(function(email, resets, callback) {
 	var template = handlebars.compile([
 		'<p>You requested a password reset for the following account(s).</p>',
