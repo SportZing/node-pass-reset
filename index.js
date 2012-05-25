@@ -142,7 +142,7 @@ exports.requestResetToken = function(opts) {
 					return res.json(err, 500);
 				}
 				if (! opts.next) {
-					res.send(200);
+					return res.send(200);
 				}
 				if (typeof opts.next === 'string') {
 					res.redirect(opts.next);
@@ -169,16 +169,41 @@ exports.resetPassword = function(opts) {
 		confirmParam: 'confirm'
 	}, opts);
 	return function(req, res, next) {
-		var fail = getFailer(opts, req, res, next);
 		var params = {
 			token: req.body[opts.tokenParam],
 			password: req.body[opts.passwordParam],
 			confirm: req.body[opts.confirmParam]
 		};
 		var id = storage.lookup(params.token);
-		if (! id) {
-			
+		if (! params.token || ! params.password || ! params.confirm) {
+			return res.json('Cannot attempt reset with missing params', 400);
 		}
+		if (! id) {
+			return res.json('Request token is invalid', 401);
+		}
+		if (params.password !== params.confirm) {
+			return res.json('Password and confirmation do not match', 400);
+		}
+		setPassword(id, params.password,
+			function(err, success, validationError) {
+				if (err) {
+					return res.json(err, 500);
+				}
+				if (! success) {
+					return res.json(validationError, 400);
+				}
+				if (! opts.next) {
+					return res.send(200);
+				}
+				if (typeof opts.next === 'string') {
+					res.redirect(opts.next);
+				} else if (typeof opts.next === 'function') {
+					opts.next(req, res, next);
+				} else {
+					next();
+				}
+			}
+		);
 	};
 };
 
