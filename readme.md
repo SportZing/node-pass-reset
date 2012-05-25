@@ -8,6 +8,16 @@ $ npm install pass-reset
 
 ## Configuration
 
+##### Example expiration
+
+```javascript
+var passReset = require('pass-reset');
+
+// The unit (second param) can be one of the following (or undefined for milliseconds):
+//   "secs", "mins", "hours", "days", or "weeks"
+passReset.expireTimeout(12, 'hours');
+```
+
 ##### Example user lookup routine
 
 ```javascript
@@ -49,19 +59,16 @@ passReset.setPassword(function(id, password, callback) {
 ```javascript
 var passReset = require('pass-reset');
 
+var template = handlebars.compile([
+	'<p>You requested a password reset for the following account(s).</p>',
+	'<ul>',
+	'{{#each resets}}',
+		'<li>{{name}}: <a href="{{url}}">{{url}}</a></li>',
+	'{{/each}}',
+	'</ul>'
+].join('\n'));
+
 passReset.sendEmail(function(email, resets, callback) {
-	var template = handlebars.compile([
-		'<p>You requested a password reset for the following account(s).</p>',
-		'<ul>',
-		'{{#each resets}}',
-			'<li>{{name}}: <a href="{{url}}">{{url}}</a></li>',
-		'{{/each}}',
-		'</ul>'
-	].join('\n'));
-	resets = resets.map(function(reset) {
-		reset.url = 'http://example.com/password/reset/' + reset.token;
-		return reset;
-	});
 	mailer.send({
 		to: email,
 		from: 'noreply@example.com',
@@ -71,6 +78,21 @@ passReset.sendEmail(function(email, resets, callback) {
 	callback(null, true);
 });
 ```
+
+## Usage
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

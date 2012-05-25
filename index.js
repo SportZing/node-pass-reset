@@ -44,10 +44,21 @@ var storage = (function() {
  *
  * Defaults to 43200000, or 12 hours
  */
+var timeoutUnits = {
+	secs:  1000,
+	mins:  1000 * 60,
+	hours: 1000 * 60 * 60,
+	days:  1000 * 60 * 60 * 24,
+	weeks: 1000 * 60 * 60 * 24 * 7
+};
 var expireTimeout = 43200000;
-exports.expireTimeout = function(milliseconds) {
-	if (typeof milliseconds === 'number' && ! isNaN(milliseconds)) {
-		expireTimeout = milliseconds;
+exports.expireTimeout = function(num, unit) {
+	if (typeof num === 'number' && ! isNaN(num)) {
+		var multiplier = 1;
+		if (unit && timeoutUnits.hasOwnProperty(unit)) {
+			multiplier = timeoutUnits[unit];
+		}
+		expireTimeout = num * multiplier;
 	}
 };
 
@@ -105,7 +116,8 @@ exports.requestResetToken = function(opts) {
 	opts = merge({
 		error: null,
 		success: null,
-		loginParam: 'login'
+		loginParam: 'login',
+		callbackURL: '/password/reset'
 	}, opts);
 	return function(req, res, next) {
 		var fail = getFailer(opts, req, res, next);
