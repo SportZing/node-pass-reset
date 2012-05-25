@@ -122,7 +122,7 @@ app.put('/password/reset',
 
 The `resetPassword` method can also take an object of configuration values. The following values are supported:
 
-* __tokenParam__/__passwordToken__/__confirmToken__ - The name of the params where the respective data (token/password/confirm) can be found in `req.body`.
+* __tokenParam__/__passwordParam__/__confirmParam__ - The name of the params where the respective data (token/password/confirm) can be found in `req.body`.
 * __next__ - By default, after the password is reset, an empty 200 OK response will be sent. To change this behavior, this value can be given a few different values. If a string is given, it is treated as a redirect, if a function is given, it will be called with the `req`, `res`, and `next` parameters, and if any other truthy value is given, the `next` function will simply be called.
 
 ```javascript
