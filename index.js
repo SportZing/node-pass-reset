@@ -117,7 +117,7 @@ exports.requestResetToken = function(opts) {
 		error: null,
 		success: null,
 		loginParam: 'login',
-		callbackURL: '/password/reset'
+		callbackURL: '/password/reset/%s'
 	}, opts);
 	return function(req, res, next) {
 		var fail = getFailer(opts, req, res, next);

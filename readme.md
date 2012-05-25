@@ -81,10 +81,24 @@ passReset.sendEmail(function(email, resets, callback) {
 
 ## Usage
 
+_These examples are based on an express application._
 
+##### Route for requesting a new reset token
 
+```javascript
+app.post('/password/reset',
+	passReset.requestResetToken(),
+	function(req, res) {
+		res.render('after_reset', { });
+	}
+);
+```
 
+The `requestResetToken` method can also take an object of configuration values. The following values are supported:
 
+* __loginParam__ - The name of param where the login data (username/email) can be found in `req.body`.
+* __callbackURL__ - The base URL to direct users to actually perform the reset. This value should contain a `"%s"` somewhere which will be replaced with the token, eg. `"/password/reset/%s"`.
+* __error__/__success__ - Handlers for error/success cases. If a string is given, a redirect to that URL will be preformed. If a function is given, it will called with `req`, `res`, and `next`. If one or both of these are missing, the `next` function will be called for that case.
 
 
 
