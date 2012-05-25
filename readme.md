@@ -1,5 +1,7 @@
 # Password Reseting Module
 
+An _express_ compatable module for creating RESTful password reset endpoints.
+
 ## Install
 
 ```bash
@@ -82,8 +84,6 @@ passReset.sendEmail(function(email, resets, callback) {
 ```
 
 ## Usage
-
-_These examples are based on an express application._
 
 ##### Route for requesting a new reset token
 
