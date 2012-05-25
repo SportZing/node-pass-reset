@@ -1,0 +1,15 @@
+{
+  "author": "James Brumond <james@sportzing.com> (http://jbrumond.me)",
+  "name": "pass-reset",
+  "description": "A drop-in password reseting module",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "uuid-v4": "latest"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
