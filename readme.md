@@ -1,4 +1,4 @@
-# Password Reseting Module
+# pass-reset
 
 An _express_ compatable module for creating RESTful password reset endpoints.
 
