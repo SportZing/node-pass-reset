@@ -85,7 +85,7 @@ exports.setPassword = function(func) {
  *
  * Should take an email address and tokens.
  */
-var sendEmail = function(email, tokens, callback) {
+var sendEmail = function(email, resets, callback) {
 	callback(null, false);
 };
 exports.sendEmail = function(func) {
