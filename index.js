@@ -4,7 +4,8 @@
  * @author     James Brumond
  */
 
-var uuid = require('uuid-v4');
+var util  = require('util');
+var uuid  = require('uuid-v4');
 
 /**
  * Stored requests that have not yet been fulfilled
@@ -65,14 +66,14 @@ exports.expireTimeout = function(num, unit) {
 /**
  * User lookup routine
  *
- * Should result in an object containing a unique id and email.
+ * Should result in an array of objects containing a unique id and email.
  */
-var lookupUser = function(login, callback) {
+var lookupUsers = function(login, callback) {
 	callback(null, null); 
 };
-exports.lookupUser = function(func) {
+exports.lookupUsers = function(func) {
 	if (typeof func === 'function') {
-		lookupUser = func;
+		lookupUsers = func;
 	}
 };
 
@@ -109,61 +110,80 @@ exports.sendEmail = function(func) {
  * The route that takes reset requests
  *
  * eg. POST /password/reset
- *
- * TODO Needs to be able to handle multiple accounts with one email
  */
 exports.requestResetToken = function(opts) {
 	opts = merge({
-		error: null,
-		success: null,
+		next: null,
 		loginParam: 'login',
 		callbackURL: '/password/reset/%s'
 	}, opts);
 	return function(req, res, next) {
-		var fail = getFailer(opts, req, res, next);
 		var login = req.body[opts.loginParam];
-		if (! login) {return fail();}
-		lookupUser(login, function(err, user) {
-			if (err) {return fail();}
-			
+		if (! login) {
+			return res.json('No login given', 400);
+		}
+		lookupUsers(login, function(err, users) {
+			if (err) {
+				return res.json(err, 500);
+			}
+			if (! users) {
+				return res.json('No such user', 404);
+			}
+			users.users = users.users.map(function(user) {
+				var token = storage.create(user.id);
+				return {
+					token: token,
+					name: user.name,
+					url: util.inspect(opts.callbackURL, token)
+				};
+			});
+			sendEmail(users.email, users.users, function(err, sent) {
+				if (err) {
+					return res.json(err, 500);
+				}
+				if (! opts.next) {
+					res.send(200);
+				}
+				if (typeof opts.next === 'string') {
+					res.redirect(opts.next);
+				} else if (typeof opts.next === 'function') {
+					opts.next(req, res, next);
+				} else {
+					next();
+				}
+			});
 		});
 	};
 };
 
+/**
+ * The route that actually does resets
+ *
+ * eg. PUT /password/reset
+ */
 exports.resetPassword = function(opts) {
 	opts = merge({
-		error: null,
-		success: null,
+		next: null,
 		tokenParam: 'token',
 		passwordParam: 'password',
 		confirmParam: 'confirm'
 	}, opts);
 	return function(req, res, next) {
 		var fail = getFailer(opts, req, res, next);
-		
+		var params = {
+			token: req.body[opts.tokenParam],
+			password: req.body[opts.passwordParam],
+			confirm: req.body[opts.confirmParam]
+		};
+		var id = storage.lookup(params.token);
+		if (! id) {
+			
+		}
 	};
 };
 
-
-
-
-
-
-
 // ------------------------------------------------------------------
 //  Utilities
-
-function getFailer(opts, req, res, next) {
-	return function() {
-		if (typeof opts.error === 'string') {
-			res.redirect(opts.error);
-		} else if (typeof opts.error === 'function') {
-			opts.error(req, res, next);
-		} else {
-			next();
-		}
-	};
-}
 
 function merge(host) {
 	host = isMutable(host) ? host : { };
