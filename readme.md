@@ -100,9 +100,20 @@ The `requestResetToken` method can also take an object of configuration values. 
 * __callbackURL__ - The base URL to direct users to actually perform the reset. This value should contain a `"%s"` somewhere which will be replaced with the token, eg. `"/password/reset/%s"`.
 * __error__/__success__ - Handlers for error/success cases. If a string is given, a redirect to that URL will be preformed. If a function is given, it will called with `req`, `res`, and `next`. If one or both of these are missing, the `next` function will be called for that case.
 
-
-
-
+```javascript
+app.post('/password/reset',
+	passReset.requestResetToken({
+		loginParam: 'login',
+		callbackURL: '/password/reset/%s',
+		error: function(req, res, next) {
+			res.render('reset_error', { });
+		},
+		success: function(req, res, next) {
+			res.render('reset_success', { });
+		}
+	})
+);
+```
 
 
 
