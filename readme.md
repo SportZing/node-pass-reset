@@ -77,7 +77,7 @@ passReset.sendEmail(function(email, resets, callback) {
 		to: email,
 		from: 'noreply@example.com',
 		subject: 'password reset',
-		body: template(resets)
+		body: template({ resets: resets })
 	});
 	callback(null, true);
 });
