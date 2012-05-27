@@ -115,7 +115,7 @@ exports.requestResetToken = function(opts) {
 	opts = merge({
 		next: null,
 		loginParam: 'login',
-		callbackURL: '/password/reset/%s'
+		callbackURL: '/password/reset/{token}'
 	}, opts);
 	return function(req, res, next) {
 		var login = req.body[opts.loginParam];
@@ -134,7 +134,7 @@ exports.requestResetToken = function(opts) {
 				return {
 					token: token,
 					name: user.name,
-					url: util.inspect(opts.callbackURL, token)
+					url: opts.callbackURL.replace('{token}', token)
 				};
 			});
 			sendEmail(users.email, users.users, function(err, sent) {
@@ -212,13 +212,13 @@ exports.resetPassword = function(opts) {
 
 function merge(host) {
 	host = isMutable(host) ? host : { };
-	for (var i = 1, c = arguments.length; i < c; i++) {
-		if (isMutable(arguments[i])) {
-			Object.keys(arguments[i]).forEach(function(prop) {
-				host[prop] = arguments[i][prop];
+	Array.prototype.slice.call(arguments, 1).forEach(function(arg) {
+		if (isMutable(arg)) {
+			Object.keys(arg).forEach(function(prop) {
+				host[prop] = arg[prop];
 			});
 		}
-	}
+	});
 	return host;
 }
 

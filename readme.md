@@ -96,7 +96,7 @@ app.post('/password/reset',
 The `requestResetToken` method can also take an object of configuration values. The following values are supported:
 
 * __loginParam__ - The name of the param where the login data (username/email) can be found in `req.body`.
-* __callbackURL__ - The base URL to direct users to actually perform the reset. This value should contain a `"%s"` somewhere which will be replaced with the token, eg. `"/password/reset/%s"`.
+* __callbackURL__ - The base URL to direct users to actually perform the reset. This value should contain a `"{token}"` somewhere which will be replaced with the token, eg. `"/password/reset/{token}"`.
 * __next__ - By default, when pass-reset is done generating a token and sending it, an empty 200 OK response will be sent. To change this behavior, this value can be given a few different values. If a string is given, it is treated as a redirect, if a function is given, it will be called with the `req`, `res`, and `next` parameters, and if any other truthy value is given, the `next` function will simply be called.
 
 ```javascript
@@ -104,7 +104,7 @@ app.post('/password/reset',
 	passReset.requestResetToken({
 		next: true,
 		loginParam: 'login',
-		callbackURL: '/password/reset/%s',
+		callbackURL: '/password/reset/{token}',
 	}),
 	function(req, res) {
 		// ...
