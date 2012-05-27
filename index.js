@@ -192,6 +192,7 @@ exports.resetPassword = function(opts) {
 				if (! success) {
 					return res.json(validationError, 400);
 				}
+				storage.destroy(params.token);
 				if (! opts.next) {
 					return res.send(200);
 				}
