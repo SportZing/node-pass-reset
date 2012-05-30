@@ -3,11 +3,14 @@
   "name": "pass-reset",
   "description": "A drop-in password reseting module",
   "version": "0.0.3",
-  "main": "index.js",
+  "main": "lib/index.js",
   "dependencies": {
     "uuid-v4": "latest"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "buster": "0.5.3",
+    "express": "2.5.9"
+  },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
