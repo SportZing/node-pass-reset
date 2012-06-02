@@ -1,4 +1,6 @@
 
+require('./io-setup');
+
 exports['Tests'] = {
 	env: 'node',
 	rootPath: '../',
