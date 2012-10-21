@@ -2,15 +2,16 @@
   "author": "James Brumond <james@sportzing.com> (http://jbrumond.me)",
   "name": "pass-reset",
   "description": "A drop-in password reseting module",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "dependencies": {
-    "uuid-v4": "latest"
+    "uuid-v4": "latest",
+    "json-output": "0.1.2",
+    "async": "~0.1.22"
   },
   "devDependencies": {
     "buster": "0.5.3",
-    "express": "2.5.9",
-    "json-output": "0.1.2"
+    "express": "latest"
   },
   "optionalDependencies": {},
   "engines": {
