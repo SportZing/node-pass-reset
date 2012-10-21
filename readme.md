@@ -92,6 +92,7 @@ var redis      = require('redis-url').connect(/* ... */);
 passReset.storage.setStore({
 	create: function(id, token, callback) {
 		redis.set(token, id, callback);
+		redis.expire(token, Math.round(passReset.expireTimeout() / 1000));
 	},
 	lookup: function(token, callback) {
 		redis.get(token, callback);
@@ -99,7 +100,7 @@ passReset.storage.setStore({
 	destroy: function(token, callback) {
 		redis.del(token, callback);
 	}
-})
+});
 ```
 
 ## Usage
