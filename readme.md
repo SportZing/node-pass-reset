@@ -83,6 +83,25 @@ passReset.sendEmail(function(email, resets, callback) {
 });
 ```
 
+##### Example custom storage for tokens
+
+```javascript
+var passReset  = require('pass-reset');
+var redis      = require('redis-url').connect(/* ... */);
+
+passReset.storage.setStore({
+	create: function(id, token, callback) {
+		redis.set(token, id, callback);
+	},
+	lookup: function(token, callback) {
+		redis.get(token, callback);
+	},
+	destroy: function(token, callback) {
+		redis.del(token, callback);
+	}
+})
+```
+
 ## Usage
 
 ##### Route for requesting a new reset token
