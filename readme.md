@@ -29,6 +29,7 @@ passReset.lookupUsers(function(login, callback) {
 	User.find({ username: login }, function(err, users) {
 		if (err) {return callback(err);}
 		if (! users.length) {return callback(null, false);}
+		var user = users[0];
 		callback(null, {
 			email: user.email,
 			users: [{
