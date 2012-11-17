@@ -5,7 +5,7 @@
   "version": "0.1.0-3",
   "main": "lib/index.js",
   "dependencies": {
-    "uuid-v4": "latest",
+    "uuid-v4": "0.0.3",
     "json-output": "0.1.2",
     "async": "~0.1.22"
   },
