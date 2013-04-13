@@ -3,7 +3,21 @@ var passreset = require('pass-reset');
 
 app.post('/password/reset',
 	passreset.requestResetToken({
-		callbackURL: 'http://www.example.com/password/reset/{token}'
+		callbackURL: 'http://www.example.com/password/reset/{token}',
+
+		// If this function is given you can handle errors yourself. Otherwise,
+		// errors will be sent automatically in a JSON format
+		error: function(err, status, req, res) {
+			res.send(status, err);
+		},
+
+		// If the "next" option is given, the action taken after successful
+		// request can be controled. A string will be treated as a redirect URL,
+		// and if a function is given it will be called after the request is
+		// processed. Otherwise, a simple JSON {status: 'OK'} will be sent.
+		next: function(req, res) {
+			res.send(200, 'Yay!');
+		}
 	});
 );
 
