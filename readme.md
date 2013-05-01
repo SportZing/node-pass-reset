@@ -2,6 +2,8 @@
 
 An _express_ compatable module for creating RESTful password reset endpoints.
 
+Pass-reset assumes very little about your setup. You use a set of functions when configuring the module that tell pass-reset how to perform the various tasks it needs to, eg. sending emails or looking up users in a database (see the configuration section below for more on the specific config functions).
+
 ## Install
 
 ```bash
