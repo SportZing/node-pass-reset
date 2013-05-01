@@ -1,4 +1,3 @@
-
 var passreset   = require('pass-reset');
 var handlebars  = require('handlebars');
 
@@ -43,7 +42,7 @@ passreset.setPassword(function(id, password, callback) {
 //
 // Configure the send email routine
 //
-passReset.sendEmail(function(email, resets, callback) {
+passreset.sendEmail(function(email, resets, callback) {
 	var template = handlebars.compile([
 		'<p>You requested a password reset for the following account(s).</p>',
 		'<ul>',
