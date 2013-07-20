@@ -1,4 +1,3 @@
-
 var passreset  = require('pass-reset');
 var redis      = require('redis-url');
 
@@ -19,4 +18,4 @@ RedisStore.prototype.destroy = function(token, callback) {
 	this.client.del(token, callback);
 };
 
-passreset.setStore(new RedisStore('redis://...'));
+passreset.storage.setStore(new RedisStore('redis://...'));

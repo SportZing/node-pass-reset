@@ -1,4 +1,3 @@
-
 var passreset  = require('pass-reset');
 var mongoose   = require('mongoose');
 
@@ -55,4 +54,4 @@ MongooseStore.prototype.destroy = function(token, callback) {
 	this.PassResetToken.remove({token: token}, callback);
 };
 
-passreset.setStore(new MongooseStore('localhost', 'test'));
+passreset.storage.setStore(new MongooseStore('localhost', 'test'));
